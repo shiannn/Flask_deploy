@@ -1,1 +1,1 @@
-web: python3.6 test_flask.py
+web: gunicorn test_flask:app –log-file -
