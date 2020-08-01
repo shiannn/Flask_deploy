@@ -32,7 +32,7 @@ def set_config():
     return render_template('home.html', post = config)
 
 def main():
-    app.run(host='0.0.0.0')
+    app.run()
 
 if __name__ == '__main__':
     main()
