@@ -4,7 +4,7 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://ylahaxwyonidoe:dbb2b0f155d23bf03398eff50fb0a4e10ecb245c0d103742cd7136f0edb66ad3@ec2-50-19-26-235.compute-1.amazonaws.com:5432/dbbggmlsebf8is"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -22,11 +22,7 @@ def get_config():
             'position': query.position,
             'last_update': query.last_update
         }
-    """
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-
-    """
+    
     return render_template('home.html', post = config)
 
 @app.route("/", methods=['POST'])
@@ -36,18 +32,6 @@ def set_config():
     position = request.form['position']
     today = str(datetime.datetime.now())
     
-    """
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-
-    config['course'] = course
-    config['date'] = date
-    config['position'] = position
-    config['last_update'] = today
-
-    with open('config.json', 'w') as f:
-        json.dump(config, f)
-    """
     Booking.query.delete()
     booking = Booking(course, date, position, today)
     print(booking)
